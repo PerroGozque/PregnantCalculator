@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,7 +11,43 @@
             background-repeat: no-repeat;
             margin: 0;
             padding: 20px;
-            color: black; /* Cambia el color del texto si es necesario */
+            color: black;
+        }
+        .full-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .full-screen img {
+            max-width: 90%;
+            max-height: 90%;
+        }
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+        .fade-in.show {
+            opacity: 1;
+        }
+        .slide-out {
+            transform: translateX(100%);
+            transition: transform 0.5s ease;
+        }
+        .slide-in {
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.5s ease, opacity 0.5s ease;
+        }
+        .slide-in.show {
+            transform: translateY(0);
+            opacity: 1;
         }
     </style>
 </head>
@@ -23,22 +60,20 @@
             </h1>
         </div>
     </header>
-      
+
     <div class="p-8"> 
         <p class="text-black font-bold text-justify">
             Esta aplicación calcula la duración actual del embarazo en semanas y días basándose en la fecha de la última menstruación, y genera fotos que comparan el tamaño del bebé con varias frutas.
         </p>
     </div>
     
-    <!--FormularioIngresoFecha-->
     <form class="mb-8 flex flex-col" id="pregnancyForm" onsubmit="return calcularDuracion(event)">
-        
         <div class="flex flex-col items-center bg-white bg-opacity-50 backdrop-blur-md rounded-lg shadow-lg">
-            <label class="mt-8 mb-4 mr-2 text-gray-500 font-bold" for="lastMenstruationDate">Fecha de Última Menstruación</label>
-            <input class="px-1 py-2 text-lg font-bold rounded-lg border focus:outline focus:outline-2 focus:outline-offset-2 bg-[#ffffff] text-[#444444] focus:outline-[#aaaaaa] border-[#cccccc]" id="lastMenstruationDate" name="lastMenstruationDate" type="date" required />  
-            <button class="mb-4 mt-4 rounded-lg text-xl  w-40 h-8 bg-[#374151] text-[#fcf0f0] justify-center" type="submit">Calcular</button>
+            <label class="mt-8 mb-4 mr-2 text-gray-500 font-bold" for="lastMenstruationDate">Fecha de Última Menstruación (FUM)</label>
+            <input class="px-1 py-2 text-lg font-bold rounded-lg border focus:outline focus:outline-2 focus:outline-offset-2 bg-[#ffffff] text-[#444444] focus:outline-[#aaaaaa] border-[#cccccc]" id="lastMenstruationDate" placeholder='prueba' name="lastMenstruationDate" type="date" required />  
+            <button class="mb-4 mt-4 rounded-lg text-xl w-40 h-8 bg-[#374151] text-[#fcf0f0] justify-center" type="submit">Calcular</button>
           </div>
-        </form>
+    </form>
 
     <div id="result" class="bg-white bg-opacity-50 backdrop-blur-md p-4 rounded-lg shadow-lg">
         <h2 class="text-black">Duración del Embarazo</h2>
@@ -46,15 +81,13 @@
         
         <h1 class="text-black">Visualizaciones</h1>
         <div>
-            <img class="mb-8 rounded-[15px] border-[12px] border-[rgb(235,221,221)]" id="babySizeImage" alt="Visualización del tamaño del bebé" src="" />
-
-            <img class="mb-8 rounded-[15px] border-[12px] border-[rgb(235,221,221)]" id="fruitSizeImage" alt="Comparación de tamaño de fruta" src=""/>
+            <img class="mb-8 rounded-[15px] border-[12px] border-[rgb(235,221,221)] cursor-pointer slide-in" id="babySizeImage" alt="Visualización del tamaño del bebé" src="" />
+            <img class="mb-8 rounded-[15px] border-[12px] border-[rgb(235,221,221)] cursor-pointer slide-in" id="fruitSizeImage" alt="Comparación de tamaño de fruta" src=""/>
         </div>
     </div>
     
-
-    <div id="fullscreenView" style="display:none;" onclick="cerrarFullscreen()">
-        <img id="fullscreenImage" src="" alt="Imagen en pantalla completa"/>
+    <div id="fullscreenView" class="full-screen hidden" onclick="closeFullScreen()">
+        <img id="fullScreenImage" class="fade-in" src="" alt="Imagen ampliada" />
     </div>
 
     <script>
@@ -174,25 +207,36 @@
                 document.getElementById('babySizeImage').src = '';
                 document.getElementById('fruitSizeImage').src = '';
             }
-        }
 
-        document.querySelectorAll('img').forEach(image => {
-            image.addEventListener('click', () => {
-                abrirFullscreen(image.src);
+            document.querySelectorAll('img.cursor-pointer').forEach(image => {
+                image.classList.add('show');
+                image.addEventListener('click', () => abrirFullscreen(image.src));
             });
-        });
+        }
 
         function abrirFullscreen(src) {
             const fullscreenView = document.getElementById('fullscreenView');
-            const fullscreenImage = document.getElementById('fullscreenImage');
+            const fullscreenImage = document.getElementById('fullScreenImage');
             fullscreenImage.src = src;
-            fullscreenView.style.display = 'block';
+            fullscreenView.classList.remove('hidden');
+            fullscreenImage.classList.add('show');
         }
 
-        function cerrarFullscreen() {
+        function closeFullScreen() {
             const fullscreenView = document.getElementById('fullscreenView');
-            fullscreenView.style.display = 'none';
+            const fullscreenImage = document.getElementById('fullScreenImage');
+            fullscreenImage.classList.add('slide-out');
+            setTimeout(() => {
+                fullscreenView.classList.add('hidden');
+                fullscreenImage.classList.remove('show', 'slide-out');
+            }, 500);
         }
+
+        window.onload = () => {
+            document.querySelectorAll('img.cursor-pointer').forEach(image => {
+                image.classList.add('show');
+            });
+        };
     </script>
 </body>
 </html>
