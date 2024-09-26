@@ -17,18 +17,12 @@
 <body>
     <header class="bg-white bg-opacity-30 backdrop-blur-md p-8 rounded-lg shadow-lg flex items-center justify-center text-center border border-gray-200">
         <div class="flex items-center">
-            <img src="/pregnant.svg" alt="Embarazo" class="h-20 w-20 mr-3" />
+            <img src="/pregnant.svg" alt="Embarazo" class="h-20 w-20 mr-1" />
             <h1 class="text-3xl font-bold text-gray-800 font-sans tracking-wide">
                 Calculadora de embarazo
             </h1>
         </div>
     </header>
-    
-    
-    
-    
-    
-    
       
     <div class="p-8"> 
         <p class="text-black font-bold text-justify">
@@ -36,6 +30,7 @@
         </p>
     </div>
     
+    <!--FormularioIngresoFecha-->
     <form class="mb-8 flex flex-col" id="pregnancyForm" onsubmit="return calcularDuracion(event)">
         
         <div class="flex flex-col items-center bg-white bg-opacity-50 backdrop-blur-md rounded-lg shadow-lg">
@@ -43,13 +38,12 @@
             <input class="px-1 py-2 text-lg font-bold rounded-lg border focus:outline focus:outline-2 focus:outline-offset-2 bg-[#ffffff] text-[#444444] focus:outline-[#aaaaaa] border-[#cccccc]" id="lastMenstruationDate" name="lastMenstruationDate" type="date" required />  
             <button class="mb-4 mt-4 rounded-lg text-xl  w-40 h-8 bg-[#374151] text-[#fcf0f0] justify-center" type="submit">Calcular</button>
           </div>
-          
-          
-    </form>
+        </form>
 
     <div id="result" class="bg-white bg-opacity-50 backdrop-blur-md p-4 rounded-lg shadow-lg">
         <h2 class="text-black">Duración del Embarazo</h2>
-        <p id="durationText" class="text-black"></p>
+        <p id="durationText" class="text-center font-bold text-4xl bg-gradient-to-r from-indigo-400 to-indigo-900 bg-clip-text text-transparent"></p>
+        
         <h1 class="text-black">Visualizaciones</h1>
         <div>
             <img class="mb-8 rounded-[15px] border-[12px] border-[rgb(235,221,221)]" id="babySizeImage" alt="Visualización del tamaño del bebé" src="" />
@@ -170,7 +164,7 @@
             const weeks = Math.floor(diffInDays / 7);
             const days = diffInDays % 7;
 
-            document.getElementById('durationText').innerText = `El tiempo de embarazo es de: ${weeks} semanas y ${days} días.`;
+            document.getElementById('durationText').innerText = ` ${weeks} semanas y ${days} días.`;
             document.getElementById('result').style.display = 'block';
 
             if (weeks >= 1 && weeks <= 40) {
