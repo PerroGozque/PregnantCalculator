@@ -1,0 +1,51 @@
+body {
+    background-image: url('https://dopniceu5am9m.cloudfront.net/static/assets/230705/aiSaasBackground2x.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 20px;
+    color: black;
+}
+
+.full-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.full-screen img {
+    max-width: 90%;
+    max-height: 90%;
+}
+
+.fade-in {
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.fade-in.show {
+    opacity: 1;
+}
+
+.slide-out {
+    transform: translateX(100%);
+    transition: transform 0.5s ease;
+}
+
+.slide-in {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+}
+
+.slide-in.show {
+    transform: translateY(0);
+    opacity: 1;
+}

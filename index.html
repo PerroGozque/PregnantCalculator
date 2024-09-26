@@ -4,60 +4,13 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Visualizador de Duración del Embarazo</title>
-    <style>
-        body {
-            background-image: url('https://dopniceu5am9m.cloudfront.net/static/assets/230705/aiSaasBackground2x.png');
-            background-size: cover;
-            background-repeat: no-repeat;
-            margin: 0;
-            padding: 20px;
-            color: black;
-        }
-        .full-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .full-screen img {
-            max-width: 90%;
-            max-height: 90%;
-        }
-        .fade-in {
-            opacity: 0;
-            transition: opacity 0.5s ease;
-        }
-        .fade-in.show {
-            opacity: 1;
-        }
-        .slide-out {
-            transform: translateX(100%);
-            transition: transform 0.5s ease;
-        }
-        .slide-in {
-            transform: translateY(20px);
-            opacity: 0;
-            transition: transform 0.5s ease, opacity 0.5s ease;
-        }
-        .slide-in.show {
-            transform: translateY(0);
-            opacity: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header class="bg-white bg-opacity-30 backdrop-blur-md p-8 rounded-lg shadow-lg flex items-center justify-center text-center border border-gray-200">
         <div class="flex items-center">
             <img src="/pregnant.svg" alt="Embarazo" class="h-20 w-20 mr-1" />
-            <h1 class="text-3xl font-bold text-gray-800 font-sans tracking-wide">
-                Calculadora de embarazo
-            </h1>
+            <h1 class="text-3xl font-bold text-gray-800 font-sans tracking-wide">Calculadora de embarazo</h1>
         </div>
     </header>
 
@@ -70,9 +23,9 @@
     <form class="mb-8 flex flex-col" id="pregnancyForm" onsubmit="return calcularDuracion(event)">
         <div class="flex flex-col items-center bg-white bg-opacity-50 backdrop-blur-md rounded-lg shadow-lg">
             <label class="mt-8 mb-4 mr-2 text-gray-500 font-bold" for="lastMenstruationDate">Fecha de Última Menstruación (FUM)</label>
-            <input class="px-1 py-2 text-lg font-bold rounded-lg border focus:outline focus:outline-2 focus:outline-offset-2 bg-[#ffffff] text-[#444444] focus:outline-[#aaaaaa] border-[#cccccc]" id="lastMenstruationDate" placeholder='prueba' name="lastMenstruationDate" type="date" required />  
+            <input class="px-1 py-2 text-lg font-bold rounded-lg border focus:outline focus:outline-2 focus:outline-offset-2 bg-[#ffffff] text-[#444444] focus:outline-[#aaaaaa] border-[#cccccc]" id="lastMenstruationDate" name="lastMenstruationDate" type="date" required />  
             <button class="mb-4 mt-4 rounded-lg text-xl w-40 h-8 bg-[#374151] text-[#fcf0f0] justify-center" type="submit">Calcular</button>
-          </div>
+        </div>
     </form>
 
     <div id="result" class="bg-white bg-opacity-50 backdrop-blur-md p-4 rounded-lg shadow-lg">
@@ -81,8 +34,8 @@
         
         <h1 class="text-black">Visualizaciones</h1>
         <div>
-            <img class="mb-8 rounded-[15px] border-[12px] border-[rgb(235,221,221)] cursor-pointer slide-in" id="babySizeImage" alt="Visualización del tamaño del bebé" src="" />
-            <img class="mb-8 rounded-[15px] border-[12px] border-[rgb(235,221,221)] cursor-pointer slide-in" id="fruitSizeImage" alt="Comparación de tamaño de fruta" src=""/>
+            <img class="mb-8 rounded-[15px] border-[12px] border-[rgb(235,221,221)] cursor-pointer" id="babySizeImage" alt="Visualización del tamaño del bebé" src="" />
+            <img class="mb-8 rounded-[15px] border-[12px] border-[rgb(235,221,221)] cursor-pointer" id="fruitSizeImage" alt="Comparación de tamaño de fruta" src=""/>
         </div>
     </div>
     
@@ -90,153 +43,6 @@
         <img id="fullScreenImage" class="fade-in" src="" alt="Imagen ampliada" />
     </div>
 
-    <script>
-        const babySizeImages = [
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-2-fertilization.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-2-fertilization.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-3-blastocycst_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-4-yolk-sac_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-5-amniotic-sac_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-6-webbed-hands_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-7-tailbone_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-8-brain-nerve-cells_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-9-finger-touch-pads.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-10-fingernails_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-11-tooth-buds_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-12-eyelids_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-13-fingerprints_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/07/pregnancy-week-13-mom_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-14-face-muscles_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-15-lung-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-16-heart-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-17-skeleton_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-18-ears_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-19-hair_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-20-fetal-movement_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-21-eyelid_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-22-eyes_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-23-hearing_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-24-lung-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-25-baby-fat_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-26-ear-nerves_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-27-sleep.jpg",
-"https://assets.babycenter.com/ims/2015/07/pregnancy-week-27-mom_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-28-eyelashes_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-29-brain-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-30-amniotic-fluid_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-31-taste-buds_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-32-fingernails_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-33-skull_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-34-lung-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-35-fetal-weight_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-36-vernix-caseosa_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-37-hair-growth_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-38-eye-color_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-39-mature-lungs_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-40-soft-spots.jpg",
-"https://assets.babycenter.com/ims/2015/07/pregnancy-week-40-mom_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-41-amniotic-fluid_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/07/pregnancy-labor-and-delivery-mom.jpg"];
-
-        const fruitSizeImages = [
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-2-fertilization.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-2-fertilization.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-3-blastocycst_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-4-yolk-sac_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-5-amniotic-sac_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-6-webbed-hands_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-7-tailbone_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-8-brain-nerve-cells_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-9-finger-touch-pads.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-10-fingernails_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-11-tooth-buds_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-12-eyelids_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-13-fingerprints_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/07/pregnancy-week-13-mom_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-14-face-muscles_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-15-lung-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-16-heart-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-17-skeleton_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-18-ears_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-19-hair_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-20-fetal-movement_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-21-eyelid_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-22-eyes_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-23-hearing_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-24-lung-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-25-baby-fat_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-26-ear-nerves_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-27-sleep.jpg",
-"https://assets.babycenter.com/ims/2015/07/pregnancy-week-27-mom_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-28-eyelashes_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-29-brain-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-30-amniotic-fluid_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-31-taste-buds_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-32-fingernails_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-33-skull_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-34-lung-development_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-35-fetal-weight_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-36-vernix-caseosa_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-37-hair-growth_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-38-eye-color_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-39-mature-lungs_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-40-soft-spots.jpg",
-"https://assets.babycenter.com/ims/2015/07/pregnancy-week-40-mom_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/01/pregnancy-week-41-amniotic-fluid_4x3.jpg",
-"https://assets.babycenter.com/ims/2015/07/pregnancy-labor-and-delivery-mom.jpg"];
-
-
-        function calcularDuracion(event) {
-            event.preventDefault();
-
-            const inputDate = document.getElementById('lastMenstruationDate').value;
-            const lastMenstruationDate = new Date(inputDate);
-            const today = new Date();
-            const diffInMilliseconds = today - lastMenstruationDate;
-            const diffInDays = Math.floor(diffInMilliseconds / (1000 * 60 * 60 * 24));
-            const weeks = Math.floor(diffInDays / 7);
-            const days = diffInDays % 7;
-
-            document.getElementById('durationText').innerText = ` ${weeks} semanas y ${days} días.`;
-            document.getElementById('result').style.display = 'block';
-
-            if (weeks >= 1 && weeks <= 40) {
-                document.getElementById('babySizeImage').src = babySizeImages[weeks - 1];
-                document.getElementById('fruitSizeImage').src = fruitSizeImages[weeks - 1];
-            } else {
-                document.getElementById('babySizeImage').src = '';
-                document.getElementById('fruitSizeImage').src = '';
-            }
-
-            document.querySelectorAll('img.cursor-pointer').forEach(image => {
-                image.classList.add('show');
-                image.addEventListener('click', () => abrirFullscreen(image.src));
-            });
-        }
-
-        function abrirFullscreen(src) {
-            const fullscreenView = document.getElementById('fullscreenView');
-            const fullscreenImage = document.getElementById('fullScreenImage');
-            fullscreenImage.src = src;
-            fullscreenView.classList.remove('hidden');
-            fullscreenImage.classList.add('show');
-        }
-
-        function closeFullScreen() {
-            const fullscreenView = document.getElementById('fullscreenView');
-            const fullscreenImage = document.getElementById('fullScreenImage');
-            fullscreenImage.classList.add('slide-out');
-            setTimeout(() => {
-                fullscreenView.classList.add('hidden');
-                fullscreenImage.classList.remove('show', 'slide-out');
-            }, 500);
-        }
-
-        window.onload = () => {
-            document.querySelectorAll('img.cursor-pointer').forEach(image => {
-                image.classList.add('show');
-            });
-        };
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
